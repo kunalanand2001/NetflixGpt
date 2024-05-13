@@ -1,10 +1,21 @@
 import React, { useState, useRef } from "react";
 import Header from "./Header";
 import { checkValidOrNot } from "../utils/validate";
+import { auth } from "../utils/firebase";
+import {
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  updateProfile,
+} from "firebase/auth";
+import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { addUser } from "../utils/userSlice";
 
 const Login = () => {
   const [isSignInForm, setIsSignInForm] = useState(true);
   const [errorMessage, setErrorMessage] = useState(null);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const toggleSignInForm = () => {
     setIsSignInForm(!isSignInForm);
@@ -12,6 +23,7 @@ const Login = () => {
 
   const email = useRef(null);
   const password = useRef(null);
+  const name = useRef(null);
 
   const handleSubmitClick = () => {
     const message = checkValidOrNot(
@@ -19,6 +31,63 @@ const Login = () => {
       password.current.value
     );
     setErrorMessage(message);
+    if (message) return;
+
+    if (!isSignInForm) {
+      //Sign Up logic
+      createUserWithEmailAndPassword(
+        auth,
+        email.current.value,
+        password.current.value
+      )
+        .then((userCredential) => {
+          const user = userCredential.user;
+
+          updateProfile(auth.currentUser, {
+            displayName: name.current.value,
+            photoURL:
+              "https://media.licdn.com/dms/image/D5603AQE2dRfHJ8TTeA/profile-displayphoto-shrink_400_400/0/1672421446810?e=1721260800&v=beta&t=dEtYeDYknvX8SJsUR6VuzL3lDHhjogANxLJsfqpDw5s",
+          })
+            .then(() => {
+              const { uid, email, displayName, photoURL } = auth.currentUser;
+              dispatch(
+                addUser({
+                  uid: uid,
+                  email: email,
+                  displayName: displayName,
+                  photoURL: photoURL,
+                })
+              );
+              navigate("/browse");
+            })
+            .catch((error) => {
+              //navigate to error.js (TODO)
+            });
+          console.log(user);
+        })
+        .catch((error) => {
+          const errorCode = error.code;
+          const errorMessage = error.message;
+          setErrorMessage(errorCode + "--" + errorMessage);
+        });
+    } else {
+      //Sign In logic.
+      signInWithEmailAndPassword(
+        auth,
+        email.current.value,
+        password.current.value
+      )
+        .then((userCredential) => {
+          const user = userCredential.user;
+          console.log(user);
+          navigate("/browse");
+        })
+        .catch((error) => {
+          const errorCode = error.code;
+          const errorMessage = error.message;
+          setErrorMessage(errorCode + "--" + errorMessage);
+        });
+    }
   };
 
   return (
@@ -40,6 +109,7 @@ const Login = () => {
         </h1>
         {!isSignInForm && (
           <input
+            ref={name}
             className="p-2 my-4 w-full bg-gray-700"
             type="text"
             placeholder="Name"
