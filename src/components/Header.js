@@ -6,13 +6,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { addUser, removeUser } from "../utils/userSlice";
 
 const Header = () => {
-
   const navigate = useNavigate();
   const user = useSelector((store) => store.user);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    onAuthStateChanged(auth, (user) => {
+    const unSubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
         // User is signed in
         const { uid, email, displayName, photoURL } = user;
@@ -24,15 +23,17 @@ const Header = () => {
             photoURL: photoURL,
           })
         );
-        navigate("/browse")
+        navigate("/browse");
       } else {
         // User is signed out
         dispatch(removeUser());
-        navigate("/")
+        navigate("/");
       }
     });
-  }, []);
 
+    // unSubscribe when component unmounts
+    return () => unSubscribe();
+  }, []);
 
   const handleSignOutPressed = () => {
     signOut(auth)
