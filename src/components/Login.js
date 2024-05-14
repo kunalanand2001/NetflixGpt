@@ -9,6 +9,7 @@ import {
 } from "firebase/auth";
 import { useDispatch } from "react-redux";
 import { addUser } from "../utils/userSlice";
+import { DEFAULT_USER_AVATAR, LOGIN_BG } from "../utils/constants";
 
 const Login = () => {
   const [isSignInForm, setIsSignInForm] = useState(true);
@@ -43,8 +44,7 @@ const Login = () => {
 
           updateProfile(auth.currentUser, {
             displayName: name.current.value,
-            photoURL:
-              "https://media.licdn.com/dms/image/D5603AQE2dRfHJ8TTeA/profile-displayphoto-shrink_400_400/0/1672421446810?e=1721260800&v=beta&t=dEtYeDYknvX8SJsUR6VuzL3lDHhjogANxLJsfqpDw5s",
+            photoURL:DEFAULT_USER_AVATAR,
           })
             .then(() => {
               const { uid, email, displayName, photoURL } = auth.currentUser;
@@ -89,7 +89,7 @@ const Login = () => {
       <div className="absolute">
         <Header />
         <img
-          src="https://assets.nflxext.com/ffe/siteui/vlv3/ff5587c5-1052-47cf-974b-a97e3b4f0656/065df910-dec3-46ae-afa8-7ad2b52dce40/IN-en-20240506-popsignuptwoweeks-perspective_alpha_website_large.jpg"
+          src={LOGIN_BG}
           alt="login-bg"
         />
       </div>
