@@ -1,11 +1,27 @@
 import React, { useRef } from "react";
 import lang from "../utils/languageConstants";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import openai from "../utils/opneAi";
+import { TMDB_URL_OPTIONS } from "../utils/tmdbOptions";
+import { addGptMovieResult } from "../utils/gptSlice";
 
 const GptSearchBar = () => {
   const languageKey = useSelector((store) => store.config.lang);
   const searchText = useRef(null);
+  const dispatch = useDispatch();
+
+  const searchMovieTMDB = async (movie) => {
+    const data = fetch(
+      "https://api.themoviedb.org/3/search/movie?query=" +
+        movie +
+        "&include_adult=false&language=en-US&page=1",
+      TMDB_URL_OPTIONS
+    );
+
+    const json = await data.json();
+
+    return json.results;
+  };
 
   const handleGptSearchClick = async () => {
     // console.log(searchText.current.value);
@@ -13,11 +29,21 @@ const GptSearchBar = () => {
       "Act as a Movie Recommendation system and suggest some movies for the query : " +
       searchText.current.value +
       ". Only give me 6 names of movies, comma like the example result given ahead. Example result: don, mission impossible 3, gadar, if, up, race.";
+
     const gptResult = await openai.chat.completions.create({
       messages: [{ role: "user", content: gptQuery }],
       model: "gpt-3.5-turbo",
     });
-    // console.log(gptResult);
+
+    const gptMovies = gptResult.choices?.[0]?.message?.content.split(",");
+
+    const promiseArray = gptMovies.map((movie) => searchMovieTMDB(movie));
+
+    const tmdbResult = await Promise.all(promiseArray);
+
+    dispatch(
+      addGptMovieResult({ movieNames: gptMovies, movieResults: tmdbResult })
+    );
   };
 
   return (
