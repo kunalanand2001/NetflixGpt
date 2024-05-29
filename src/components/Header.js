@@ -76,7 +76,7 @@ const Header = () => {
             </select>
           )}
           <button
-            className="bg-black text-white rounded-lg ml-4 p-2 h-10 mx-4 font-bold bg-violet-900"
+            className="text-white rounded-lg ml-4 p-2 h-10 mx-4 font-bold bg-violet-900"
             onClick={handelGptSearchClick}
           >
             {showGptSearch ? "Home Page" : "GPT Search"}
@@ -84,7 +84,7 @@ const Header = () => {
           <img className="w-12 h-12 rounded-lg" src={user?.photoURL} />
           <button
             onClick={handleSignOutPressed}
-            className="bg-black text-white rounded-lg ml-4 p-2 h-10 font-bold bg-gradient-to-b from-red-900 hover:bg-gradient-to-t from-red-900"
+            className="bg-black text-white rounded-lg ml-4 p-2 h-10 font-bold bg-gradient-to-b from-red-900 hover:bg-gradient-to-t"
           >
             (Sign Out)
           </button>
