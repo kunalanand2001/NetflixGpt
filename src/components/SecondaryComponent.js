@@ -11,8 +11,8 @@ const SecondaryComponent = () => {
       <div className="bg-black">
         <div  className="pl-12 -mt-56 relative z-20">
           <MovieList title={"Now Playing"} movies={movies.nowPlayingMovies} />
-          <MovieList title={"Top Rated"} movies={movies.topRatedMovies} />
           <MovieList title={"UP Coming"} movies={movies.upComingMovies} />
+          <MovieList title={"Top Rated"} movies={movies.topRatedMovies} />
           <MovieList title={"Popular"} movies={movies.popularMovies} />
         </div>
       </div>
