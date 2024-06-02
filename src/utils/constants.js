@@ -9,6 +9,8 @@ export const LOGIN_BG =
 
 export const MOVIE_POSTER_IMG_CDN = "https://image.tmdb.org/t/p/w500/";
 
+export const OPENAI_KEY = process.env.REACT_APP_OPENAI_KEY;
+
 export const SUPPORTED_LANGUAGES = [
   { identifier: "en", name: "English" },
   { identifier: "hinid", name: "Hindi" },
