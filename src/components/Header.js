@@ -59,10 +59,14 @@ const Header = () => {
   };
 
   return (
-    <div className="absolute bg-gradient-to-b from-black px-4 py-2 w-screen flex justify-between z-10">
-      <img className="w-56" src={NETFLIX_LOGO} alt="netflix logo" />
+    <div className="absolute bg-gradient-to-b from-black px-4 py-2 w-screen flex flex-col md:flex-row justify-between z-10">
+      <img
+        className="w-44 mx-auto md:mx-0"
+        src={NETFLIX_LOGO}
+        alt="netflix logo"
+      />
       {user && (
-        <div className="flex p-2">
+        <div className="flex p-2 justify-between">
           {showGptSearch && (
             <select
               className="ml-4 p-2 h-10 mx-4 bg-gray-900 text-white rounded-lg"
@@ -76,7 +80,7 @@ const Header = () => {
             </select>
           )}
           <button
-            className="text-white rounded-lg ml-4 p-2 h-10 mx-4 font-bold bg-violet-900"
+            className="text-white rounded-lg ml-4 p-2 h-15 md:h-10 mx-4 font-bold bg-violet-900"
             onClick={handelGptSearchClick}
           >
             {showGptSearch ? "Home Page" : "GPT Search"}
@@ -84,7 +88,7 @@ const Header = () => {
           <img className="w-12 h-12 rounded-lg" src={user?.photoURL} />
           <button
             onClick={handleSignOutPressed}
-            className="bg-black text-white rounded-lg ml-4 p-2 h-10 font-bold bg-gradient-to-b from-red-900 hover:bg-gradient-to-t"
+            className="bg-black text-white rounded-lg ml-4 p-2 h-15 md:h-10 font-bold bg-gradient-to-b from-red-900 hover:bg-gradient-to-t"
           >
             (Sign Out)
           </button>

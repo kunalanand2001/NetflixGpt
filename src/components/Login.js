@@ -44,7 +44,7 @@ const Login = () => {
 
           updateProfile(auth.currentUser, {
             displayName: name.current.value,
-            photoURL:DEFAULT_USER_AVATAR,
+            photoURL: DEFAULT_USER_AVATAR,
           })
             .then(() => {
               const { uid, email, displayName, photoURL } = auth.currentUser;
@@ -89,6 +89,7 @@ const Login = () => {
       <div className="absolute">
         <Header />
         <img
+          className="h-screen md:h-auto object-cover"
           src={LOGIN_BG}
           alt="login-bg"
         />
@@ -96,7 +97,7 @@ const Login = () => {
 
       <form
         onSubmit={(e) => e.preventDefault()}
-        className="absolute w-3/12 p-16 bg-black my-36 mx-auto right-0 left-0 text-white rounded-lg bg-opacity-80"
+        className="absolute w-11/12 md:w-3/12 p-16 bg-black my-36 mx-auto right-0 left-0 text-white rounded-lg bg-opacity-80"
       >
         <h1 className="font-bold text-3xl py-4">
           {isSignInForm ? "Sign In" : "Sign Up"}
